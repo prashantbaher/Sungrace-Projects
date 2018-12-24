@@ -18,3 +18,23 @@ C:\Users\prashant\Desktop\Sits Proj\Armo Tool Ltd\SwMacro\bin\Debug\SolidWorks.P
 C:\Users\prashant\Desktop\Sits Proj\Armo Tool Ltd\SwMacro\bin\Debug\SolidWorks.IRemoteInteropObjectContract.dll
 C:\Users\prashant\Desktop\Sits Proj\Armo Tool Ltd\SwMacro\obj\Debug\Armo Tool Ltd.dll
 C:\Users\prashant\Desktop\Sits Proj\Armo Tool Ltd\SwMacro\obj\Debug\Armo Tool Ltd.pdb
+C:\Users\prashant\Documents\GitHub\Sungrace-Projects\Armo Tool Ltd\Armo Tool Ltd\SwMacro\obj\Release\ResolveAssemblyReference.cache
+C:\Users\prashant\Documents\GitHub\Sungrace-Projects\Armo Tool Ltd\Armo Tool Ltd\SwMacro\obj\Release\Armo_Tool_Ltd.csproj.Properties.Resources.resources
+C:\Users\prashant\Documents\GitHub\Sungrace-Projects\Armo Tool Ltd\Armo Tool Ltd\SwMacro\obj\Release\Armo Tool Ltd.csproj.GenerateResource.Cache
+C:\Users\prashant\Documents\GitHub\Sungrace-Projects\Armo Tool Ltd\Armo Tool Ltd\SwMacro\obj\Release\Armo Tool Ltd.dll
+C:\Users\prashant\Documents\GitHub\Sungrace-Projects\Armo Tool Ltd\Armo Tool Ltd\SwMacro\bin\Release\Armo Tool Ltd.dll
+C:\Users\prashant\Documents\GitHub\Sungrace-Projects\Armo Tool Ltd\Armo Tool Ltd\SwMacro\bin\Release\SolidWorks.Interop.SldWorks.dll
+C:\Users\prashant\Documents\GitHub\Sungrace-Projects\Armo Tool Ltd\Armo Tool Ltd\SwMacro\bin\Release\SolidWorks.Interop.swconst.dll
+C:\Users\prashant\Documents\GitHub\Sungrace-Projects\Armo Tool Ltd\Armo Tool Ltd\SwMacro\bin\Release\SolidWorks.Proxy.Sldworks.dll
+C:\Users\prashant\Documents\GitHub\Sungrace-Projects\Armo Tool Ltd\Armo Tool Ltd\SwMacro\bin\Release\SolidWorks.IRemoteInteropObjectContract.dll
+C:\Users\prashant\Documents\GitHub\Sungrace-Projects\Armo Tool Ltd\Armo Tool Ltd\SwMacro\bin\Debug\Armo Tool Ltd.dll
+C:\Users\prashant\Documents\GitHub\Sungrace-Projects\Armo Tool Ltd\Armo Tool Ltd\SwMacro\bin\Debug\Armo Tool Ltd.pdb
+C:\Users\prashant\Documents\GitHub\Sungrace-Projects\Armo Tool Ltd\Armo Tool Ltd\SwMacro\bin\Debug\SolidWorks.Interop.SldWorks.dll
+C:\Users\prashant\Documents\GitHub\Sungrace-Projects\Armo Tool Ltd\Armo Tool Ltd\SwMacro\bin\Debug\SolidWorks.Interop.swconst.dll
+C:\Users\prashant\Documents\GitHub\Sungrace-Projects\Armo Tool Ltd\Armo Tool Ltd\SwMacro\bin\Debug\SolidWorks.Proxy.Sldworks.dll
+C:\Users\prashant\Documents\GitHub\Sungrace-Projects\Armo Tool Ltd\Armo Tool Ltd\SwMacro\bin\Debug\SolidWorks.IRemoteInteropObjectContract.dll
+C:\Users\prashant\Documents\GitHub\Sungrace-Projects\Armo Tool Ltd\Armo Tool Ltd\SwMacro\obj\Debug\ResolveAssemblyReference.cache
+C:\Users\prashant\Documents\GitHub\Sungrace-Projects\Armo Tool Ltd\Armo Tool Ltd\SwMacro\obj\Debug\Armo_Tool_Ltd.csproj.Properties.Resources.resources
+C:\Users\prashant\Documents\GitHub\Sungrace-Projects\Armo Tool Ltd\Armo Tool Ltd\SwMacro\obj\Debug\Armo Tool Ltd.csproj.GenerateResource.Cache
+C:\Users\prashant\Documents\GitHub\Sungrace-Projects\Armo Tool Ltd\Armo Tool Ltd\SwMacro\obj\Debug\Armo Tool Ltd.dll
+C:\Users\prashant\Documents\GitHub\Sungrace-Projects\Armo Tool Ltd\Armo Tool Ltd\SwMacro\obj\Debug\Armo Tool Ltd.pdb
