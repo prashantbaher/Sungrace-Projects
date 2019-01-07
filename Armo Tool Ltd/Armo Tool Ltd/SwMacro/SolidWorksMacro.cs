@@ -85,22 +85,46 @@ namespace Armo_Tool_Ltd.csproj
         {
             // Sets new arraylist for edge
             EdgeList = new ArrayList();
+
             // Sets new arraylist for curves
             CurveList = new ArrayList();
+
             // Sets new arraylist for Surfaces
             SurfaceList = new ArrayList();
 
-            //// Sets Solidworks application to swApp 
-            //swApp = new SldWorks();
-
             // Sets current document as active document
             swDoc = (ModelDoc2)swApp.ActiveDoc;
+
+            // Check if we opened a file or not and if drawing document is opened
+            if ((swDoc == null))
+            {
+                // Send message to user to open an document to run this add-in
+                swApp.SendMsgToUser2("No document found. Please open a document.", (int)swMessageBoxIcon_e.swMbWarning, (int)swMessageBoxBtn_e.swMbOkCancel);
+                return;
+            }
+
+            // Getting opened document type
+            int swDocType = swDoc.GetType();
+
+            // If swDoc is not null then check if it is a drawing, if yes then ask to open assembly or part
+            if (swDocType == (int)swDocumentTypes_e.swDocDRAWING)
+            {
+                swApp.SendMsgToUser("Please open an assembly or a part file");
+                return;
+            }
 
             // Sets the current document to part document
             swPart = (PartDoc)swDoc;
 
             // Gets the body of part and sets to the variable 
             swBody = (Body2)swPart.Body();
+
+            // Check if there are bodies in model or not, if not give a message and end the program
+            if (swBody == null)
+            {
+                swApp.SendMsgToUser("There are no bodies available for this document.");
+                return;
+            }
 
             // Gets the first face of the body and assign it to the variable
             swFace = (Face2)swBody.GetFirstFace();
@@ -114,7 +138,7 @@ namespace Armo_Tool_Ltd.csproj
                 // Loop through unill loop of a face is nothing
                 while (swLoop != null)
                 {
-                    
+                    swApp.SendMsgToUser("Ok I am ");
                 }
 
             } while (swFace != null);

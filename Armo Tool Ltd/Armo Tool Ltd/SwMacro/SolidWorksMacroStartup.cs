@@ -38,6 +38,7 @@ namespace Armo_Tool_Ltd.csproj
             {
                 SolidWorks.RunMacroResult runResult = RunMacro();
 
+           
                 if (runResult == SolidWorks.RunMacroResult.NoneSpecified)
                 {
                     try
