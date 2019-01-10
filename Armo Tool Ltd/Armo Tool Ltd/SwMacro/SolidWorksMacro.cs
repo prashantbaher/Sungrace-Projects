@@ -40,39 +40,19 @@ namespace Armo_Tool_Ltd.csproj
         public Face2 swFace;
 
         /// <summary>
-        /// Soldiworks Loop variable to use <see cref="Loop2"/> interface of Solidworks
+        /// Solidworks surface variables to use <see cref="Surface"/> interface of Solidworks
         /// </summary>
-        public Loop2 swLoop;
+        public Surface swSurface;
 
         /// <summary>
-        /// Solidworks Curve variable to use <see cref="Curve"/> interface of Solidworks
+        /// Solidworks feature variables to use <see cref="Feature"/> interface of Solidworks
         /// </summary>
-        public Curve swCurve;
+        public Feature swFeature;
 
         /// <summary>
-        /// Different surface variables to use <see cref="Surface"/> interface of Solidworks
+        /// Solidworks swHoleWizardData variables to use <see cref="WizardHoleFeatureData2"/> interface of Solidworks
         /// </summary>
-        public Surface swSurface1, swSurface2, swFinalSurface;
-
-        /// <summary>
-        /// Different <see cref="Entity"/>
-        /// </summary>
-        public Entity swEntity, swSafeEntity;
-
-        /// <summary>
-        /// EdgeList : List of required Edges in the body
-        /// CurveList : List of required Curves in the body
-        /// SurfaceList : List of required Surfaces in the body
-        /// Edges : List of all edges in the body
-        /// EdgeParameter1, EdgeParameter2 : List of Pararmeters of an Edge
-        /// Edges : List of faces two faces adjacent to an edge
-        /// </summary>
-        public ArrayList EdgeList, CurveList, SurfaceList, Edges, EdgeParameter1, EdgeParameter2, Faces;
-
-        /// <summary>
-        /// List of integers for iterating
-        /// </summary>
-        public int i, j, k;
+        public WizardHoleFeatureData2 swHoleWizardData;
 
         #endregion
 
@@ -83,14 +63,7 @@ namespace Armo_Tool_Ltd.csproj
         /// </summary>
         public void Main()
         {
-            // Sets new arraylist for edge
-            EdgeList = new ArrayList();
-
-            // Sets new arraylist for curves
-            CurveList = new ArrayList();
-
-            // Sets new arraylist for Surfaces
-            SurfaceList = new ArrayList();
+            #region Initial Checks and starting process
 
             // Sets current document as active document
             swDoc = (ModelDoc2)swApp.ActiveDoc;
@@ -116,32 +89,128 @@ namespace Armo_Tool_Ltd.csproj
             // Sets the current document to part document
             swPart = (PartDoc)swDoc;
 
-            // Gets the body of part and sets to the variable 
-            swBody = (Body2)swPart.Body();
+            #endregion
+
+            #region Counting Total Cylindrical Surfaces
+
+            // List of bodies in part
+            object[] BodyArray = null;
+
+            // Gets all bodies inside a part
+            BodyArray = (object[])(swPart.GetBodies2((int)swBodyType_e.swAllBodies, true));
 
             // Check if there are bodies in model or not, if not give a message and end the program
-            if (swBody == null)
+            if (BodyArray == null)
             {
+                // Send error message to user about no body was avaialable
                 swApp.SendMsgToUser("There are no bodies available for this document.");
                 return;
             }
 
-            // Gets the first face of the body and assign it to the variable
-            swFace = (Face2)swBody.GetFirstFace();
+            // variable for counting number of cylinder in a body
+            int swCylinderCount = 0;
 
-            // Loop through unill faces of a body is nothing
+            // Looping thourgh each body inside body list
+            foreach (Body2 SingleBody in BodyArray)
+            {
+                // taking each body at a time
+                swBody = (Body2)SingleBody;
+
+                // Gets the first face of the body 
+                swFace = (Face2)swBody.GetFirstFace();
+
+                // Loop through unill faces of a body is nothing
+                do
+                {
+                    // Getting each surface of this body
+                    swSurface = (Surface)swFace.GetSurface();
+
+                    // Check if there are surface in body or not, if not give a message and end the program
+                    if (swSurface == null)
+                    {
+                        // Send error message to user about no surface was avaialable
+                        swApp.SendMsgToUser("There are no bodies available for this document.");
+                        return;
+                    }
+
+                    // If a surface is cylinderical, increase the count of it by 1
+                    if (swSurface.IsCylinder())
+                        swCylinderCount += 1;
+
+                    // Getting next surface of this body
+                    swFace = (Face2)(swFace.GetNextFace());
+
+
+                } while (swFace != null);
+            }
+
+            #endregion
+
+            #region Number of Holes through Hole wizard
+
+            // Getting 1st feature of part document
+            swFeature = (Feature)swPart.FirstFeature();
+
+            // Checking if part has some feature, it is overkill to checking such things but it makes our application more full proof.
+            if (swFeature == null)
+            {
+                // Send message to user to open an document to run this add-in
+                swApp.SendMsgToUser2("No feature found. Please open a document.", (int)swMessageBoxIcon_e.swMbWarning, (int)swMessageBoxBtn_e.swMbOkCancel);
+                return;
+            }
+
+            // Variable for counting hole throuhg hole wizard
+            int NumberOfWizardHole = 0;
+
+            // Looping though each feature to get wizard hole feature
             do
             {
-                // Gets the first loop of face and assign it to the variable
-                swLoop = (Loop2)swFace.GetFirstLoop();
+                // Variable for storing feature name
+                string FeatureName = string.Empty;
 
-                // Loop through unill loop of a face is nothing
-                while (swLoop != null)
+                // Getting name of each feature inside a part document
+                FeatureName = swFeature.GetTypeName2();
+
+                // Checking if feature has some name
+                if (FeatureName == null)
                 {
-                    swApp.SendMsgToUser("Ok I am ");
+                    // Send message to user to open an document to run this add-in
+                    swApp.SendMsgToUser2("Something went wrong, Please contact add-in developer to resolve this issue.", (int)swMessageBoxIcon_e.swMbWarning, (int)swMessageBoxBtn_e.swMbOkCancel);
+                    return;
                 }
 
-            } while (swFace != null);
+                // If feature name is "HoleWzd" (<-- This is the returen value when we apply GetTypeName2 method)
+                // Then only count sketch points inside this hole
+                if (FeatureName == "HoleWzd")
+                {
+                    // Getting the defination of feature i.e. What type of feature it is actually
+                    swHoleWizardData = (WizardHoleFeatureData2)swFeature.GetDefinition();
+
+                    // Getting the count of sketch point inside hole
+                    // because number of sketch point = number of holes through this feature
+                    NumberOfWizardHole = swHoleWizardData.GetSketchPointCount();
+                }
+
+                // Get and set the next feature inside the document
+                swFeature = (Feature)swFeature.GetNextFeature();
+
+            } while (swFeature != null);
+
+            #endregion
+
+            #region Number of actual holes in the document
+
+            // Variable for counting holes
+            int HoleCount = 0;
+
+            // Counting actual holes by subtracting number of wizard holes from total number of cylindrical surfaces
+            HoleCount = swCylinderCount - NumberOfWizardHole;
+
+            // Message to user about number of holes
+            swApp.SendMsgToUser("Number of holes in this document: " + HoleCount);
+
+            #endregion
+
         }
 
         #endregion
