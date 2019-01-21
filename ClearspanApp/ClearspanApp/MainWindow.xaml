@@ -1,0 +1,64 @@
+﻿<Window x:Class="ClearspanApp.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:ClearspanApp"
+        mc:Ignorable="d"
+        MinHeight="400"
+        MinWidth="350"
+        Title="MainWindow" Height="500" Width="500">
+    
+    <!--Front page container-->
+    <Border>
+        
+        <!--#region Front page menu-->
+        <StackPanel Name="FrontMenuList" HorizontalAlignment="Center" VerticalAlignment="Center">
+            
+            <!--Asking user to select from the below menu buttons-->
+            <TextBlock Text="Please select one of the following:" FontSize="20" Margin="5" Padding="10" />
+        
+            <!--Button for creating tech doc part-->
+            <Button Click="CreateTechDocPartSketch" 
+                    HorizontalAlignment="Center" 
+                    VerticalAlignment="Center" 
+                    Content="Create Tech Doc sketch" 
+                    Padding="20" 
+                    Margin="5"
+                    FontSize="15" />
+
+            <!--Button for creating tech doc drawing-->
+            <Button 
+                    IsEnabled="False"
+                    HorizontalAlignment="Center" 
+                    VerticalAlignment="Center" 
+                    Content="Create Tech Doc drawing" 
+                    Padding="20" 
+                    Margin="5"
+                    FontSize="15" />
+
+            <!--Button for creating End wall assembly-->
+            <Button 
+                    IsEnabled="False"
+                    HorizontalAlignment="Center" 
+                    VerticalAlignment="Center" 
+                    Content="Create End wall assembly" 
+                    Padding="20" 
+                    Margin="5"
+                    FontSize="15" />
+        
+            <!--Button for creating End wall drawing-->
+            <Button 
+                    IsEnabled="False"
+                    HorizontalAlignment="Center" 
+                    VerticalAlignment="Center" 
+                    Content="Create End wall drawing" 
+                    Padding="20" 
+                    Margin="5"
+                    FontSize="15" />
+
+        </StackPanel>
+        <!--#endregion-->
+        
+    </Border>
+</Window>
