@@ -14,4 +14,3 @@ C:\Users\prashant\Documents\GitHub\Sungrace-Projects\GoMech\SampleApplication\Sa
 C:\Users\prashant\Documents\GitHub\Sungrace-Projects\GoMech\SampleApplication\SampleApplication\obj\Debug\SampleApplication.csproj.CoreCompileInputs.cache
 C:\Users\prashant\Documents\GitHub\Sungrace-Projects\GoMech\SampleApplication\SampleApplication\obj\Debug\SampleApplication.exe
 C:\Users\prashant\Documents\GitHub\Sungrace-Projects\GoMech\SampleApplication\SampleApplication\obj\Debug\SampleApplication.pdb
-C:\Users\prashant\Documents\GitHub\Sungrace-Projects\GoMech\SampleApplication\SampleApplication\obj\Debug\SampleApplication.csprojAssemblyReference.cache
