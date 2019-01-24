@@ -3,192 +3,277 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:wpfx="http://schemas.xceed.com/wpf/xaml/toolkit"
         xmlns:local="clr-namespace:SampleApplication"
         mc:Ignorable="d"
         WindowStartupLocation="CenterScreen"
         MinHeight="300"
         MinWidth="500"
         Name="SungraceApplication"
-        Title="ProNest API" Height="550" Width="550">
-    <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
-
-        <!--NumericUpDown-->
+        Title="ProNest API" Height="700" Width="600">
+    <ScrollViewer>
         
-        <Grid>
+        <StackPanel Width="450" Background="WhiteSmoke" CanVerticallyScroll="True" HorizontalAlignment="Center" VerticalAlignment="Center">
 
-            <Grid.RowDefinitions>
-                <RowDefinition Height="*" />
-                <RowDefinition Height="*" />
-                <RowDefinition Height="*" />
-                <RowDefinition Height="*" />
-                <RowDefinition Height="*" />
-                <RowDefinition Height="*" />
-                <RowDefinition Height="*" />
-                <RowDefinition Height="*" />
-            </Grid.RowDefinitions>
+            <!--#region Input Area-->
+            
+            <Grid>
 
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="*" />
-            </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
 
-            <!--#region Job Name-->
-            <TextBlock Grid.Column="0" Grid.Row="0"
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+
+                <!--#region Job Name-->
+                <TextBlock Grid.Column="0" Grid.Row="0"
                        Text="Job Name" 
                        Padding="10"
                        FontSize="15"
                        Margin="5"
                        />
 
-            <TextBox Grid.Column="1" Grid.Row="0" 
+                <TextBox Grid.Column="1" Grid.Row="0" 
                      Name="OutputJobNameTextBox" 
                      Margin="5"
                      TextAlignment="Center"
                      FontSize="20"
                      Width="Auto" />
-            <!--#endregion-->
+                <!--#endregion-->
 
-            <!--#region Selecting Part List-->
-            <TextBlock Grid.Column="0" Grid.Row="1"
+                <!--#region Selecting Part List-->
+                <TextBlock Grid.Column="0" Grid.Row="1"
                        Text="Select Part file" 
                        Padding="10"
                        FontSize="15"
                        Margin="5"
                        />
 
-            <ComboBox Grid.Column="1" Grid.Row="1"
-                      Name="CADPartList"
+                <ComboBox Grid.Column="1" Grid.Row="1"
+                          HorizontalContentAlignment="Right"
+                      Name="CADPartListComboBox"
                       Padding="10"
                       IsEditable="True"
                       SelectedIndex="0"
                       FontSize="15"
                       Width="Auto"
                       Margin="5">
-            </ComboBox>
-            <!--#endregion-->
+                </ComboBox>
+                <!--#endregion-->
 
-            <!--#region Nest quantity-->
-            <TextBlock Grid.Column="0" Grid.Row="2" 
+                <!--#region Nest quantity-->
+                <TextBlock Grid.Column="0" Grid.Row="2" 
                        Text="Quantity" 
                        Margin="5"
                        Padding="10"
                        FontSize="15" />
 
-            <!--#region Up and Down Arrow Button-->
-            <Grid Grid.Column="1" Grid.Row="2">
+                <wpfx:IntegerUpDown Grid.Column="1" Grid.Row="2"
+                                    Name="NestQuantityNumberBox"
+                                    DisplayDefaultValueOnEmptyText="True"
+                                    DefaultValue="1"
+                                    Increment="1"
+                                    Minimum="1"
+                                    Width="Auto"
+                                    Margin="5"
+                                    HorizontalContentAlignment="Center"
+                                    FormatString="G0" />
 
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*" />
-                    <ColumnDefinition Width="Auto" />
-                </Grid.ColumnDefinitions>
+                <!--#endregion-->
 
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="*" />
-                </Grid.RowDefinitions>
-
-                <TextBox Grid.Column="0" 
-                         Name="NestQuantityTextBox" 
-                         Margin="5 5 0 5"
-                         Text="1"
-                         TextAlignment="Center"
-                         FontSize="20"
-                          />
-
-                <StackPanel Grid.Column="1"
-                            Grid.Row="0"
-                            VerticalAlignment="Center">
-
-                    <Button FontSize="20"
-                            Background="White" 
-                            Height="20"
-                            Width="20"
-                            Click="UpArrowButton">
-                        <Image Source="/Images/up arraow.jpg" />
-                    </Button>
-
-                    <Button FontSize="20"
-                            Background="White" 
-                            Height="20"
-                            Width="20"
-                            Click="DownArrowButton">
-                        <Image Source="/Images/down arrow.jpg" />
-                    </Button>
-                </StackPanel>
-
-            </Grid>
-            <!--#endregion-->
-            
-            <!--#endregion-->
-
-            <!--#region Selecting Class-->
-            <TextBlock Grid.Column="0" Grid.Row="3"
+                <!--#region Selecting Class-->
+                <TextBlock Grid.Column="0" Grid.Row="3"
                        Text="Select Class" 
                        Padding="10"
                        FontSize="15"
                        Margin="5"
                        />
 
-            <ComboBox Grid.Column="1" Grid.Row="3"
+                <ComboBox Grid.Column="1" Grid.Row="3"
                       Padding="10"
+                          HorizontalContentAlignment="Right"
                       IsEditable="True"
                       SelectedIndex="1"
                       FontSize="15"
                       Width="Auto"
                       Margin="5">
-                <ComboBoxItem>None</ComboBoxItem>
-                <ComboBoxItem>40Amp N2/N2</ComboBoxItem>
-                <ComboBoxItem>40Amp Air/Air</ComboBoxItem>
-            </ComboBox>
-            <!--#endregion-->
+                    <ComboBoxItem>None</ComboBoxItem>
+                    <ComboBoxItem>40Amp N2/N2</ComboBoxItem>
+                    <ComboBoxItem>40Amp Air/Air</ComboBoxItem>
+                </ComboBox>
+                <!--#endregion-->
 
-            <!--#region Selecting Material-->
-            <TextBlock Grid.Column="0" Grid.Row="4"
-                       Text="Select Material" 
+                <!--#region Selecting Material-->
+                <TextBlock Grid.Column="0" Grid.Row="4"
+                       Text="Select Material ID" 
                        Padding="10"
                        FontSize="15"
                        Margin="5"
                        />
 
-            <ComboBox Grid.Column="1" Grid.Row="4"
-                      Name="MaterialList"
-                      Padding="10"
-                      SelectedIndex="0"
-                      IsEditable="True"
-                      FontSize="15"
-                      Width="Auto"
-                      Margin="5">
-                <ComboBoxItem>18</ComboBoxItem>
-                <ComboBoxItem>19</ComboBoxItem>
-                <ComboBoxItem>20</ComboBoxItem>
-            </ComboBox>
-            <!--#endregion-->
-            
-            <!--#region Defining Pronest Visibility-->
-            <TextBlock Grid.Column="0" Grid.Row="5"
+                <ComboBox Grid.Column="1" Grid.Row="4"
+                          Name="MaterialListComboBox"
+                          Padding="10"
+                          HorizontalContentAlignment="Right"
+                          SelectedIndex="0"
+                          IsEditable="True"
+                          FontSize="15"
+                          Width="Auto"
+                          Margin="5">
+                    <ComboBoxItem>18</ComboBoxItem>
+                    <ComboBoxItem>19</ComboBoxItem>
+                    <ComboBoxItem>20</ComboBoxItem>
+                </ComboBox>
+                <!--#endregion-->
+
+                <!--#region Defining Pronest Visibility-->
+                <TextBlock Grid.Column="0" Grid.Row="5"
                        Text="ProNest Visibility" 
                        Padding="10"
                        FontSize="15"
                        Margin="5"
                        />
 
-            <CheckBox Grid.Column="1" 
+                <CheckBox Grid.Column="1" 
                       Grid.Row="5"
+                      Margin="5"
                       Name="PronestAppVisibility"
-                      HorizontalAlignment="Center"
+                      HorizontalAlignment="Left"
                       VerticalAlignment="Center"/>
+                <!--#endregion-->
+
+            </Grid>
+
+            <!--#endregion-->
+            
+            <!--#region Output-->
+            <TextBlock Text="Output" 
+                   FontWeight="Bold"
+                   FontSize="25"
+                   Margin="5" />
+
+            <GroupBox>
+                <GroupItem>
+
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*" />
+                            <RowDefinition Height="*" />
+                            <RowDefinition Height="*" />
+                            <RowDefinition Height="*" />
+                        </Grid.RowDefinitions>
+
+                        <!--#region Generate NC File-->
+                        <TextBlock Grid.Column="0" Grid.Row="0"
+                               Text="Generate NC File" 
+                               Padding="10"
+                               FontSize="15"
+                               Margin="5" />
+
+                        <CheckBox Grid.Column="1" 
+                                  Grid.Row="0"
+                                  Name="GenerateNCFileCheckBox"
+                                  Margin="5"
+                                  HorizontalAlignment="Left"
+                                  VerticalAlignment="Center"/>
+                        <!--#endregion-->
+
+                        <!--#region Export to Dxf-->
+                        <TextBlock Grid.Column="0" Grid.Row="1"
+                                   Text="Export to Dxf" 
+                                   Padding="10"
+                                   FontSize="15"
+                                   Margin="5" />
+
+                        <CheckBox Grid.Column="1" 
+                                  Grid.Row="1"
+                                  Name="ExportToDxfCheckBox"
+                                  Margin="5"
+                                  HorizontalAlignment="Left"
+                                  VerticalAlignment="Center"/>
+                        <!--#endregion-->
+
+                        <!--#region Job Summary-->
+                        <TextBlock Grid.Column="0" Grid.Row="2"
+                               Text="Job Summary" 
+                               Padding="10"
+                               FontSize="15"
+                               Margin="5" />
+
+                        <CheckBox Grid.Column="1" 
+                                  Grid.Row="2"
+                                  Name="GenerateJobSummaryCheckBox"
+                                  Margin="5"
+                                  HorizontalAlignment="Left"
+                                  VerticalAlignment="Center"/>
+                        <!--#endregion-->
+                        
+                        <!--#region Output directory-->
+                        <TextBlock Grid.Column="0" Grid.Row="3"
+                               Text="Output directory" 
+                               Padding="10"
+                               FontSize="15"
+                               Margin="5" />
+
+                        <Grid Grid.Column="1" Grid.Row="3">
+
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="3*" />
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+
+                            <TextBox Grid.Column="0"
+                                     Margin="5 5 0 5"
+                                     IsEnabled="False"
+                                     Text="C:\ProNest\"
+                                     VerticalContentAlignment="Center"
+                                     Name="OutputDirectoryNameTextBox"/>
+
+                            <Button Grid.Column="1" 
+                                    Content="Browse"
+                                    Background="White"
+                                    Margin="0 5 5 5"
+                                    Padding="5"
+                                    Click="BrowseOutputDirectory"
+                                    />
+
+                        </Grid>
+                        <!--#endregion-->
+                        
+                    </Grid>
+
+                </GroupItem>
+            </GroupBox>
+
+
             <!--#endregion-->
 
-        </Grid>
-
-        <!--#region Application Main Button-->
-        <Button Content="Run ProNest" 
+            <!--#region Application Main Button-->
+            <Button Content="Run ProNest" 
                 Click="Button_Click"
                 Padding="15" 
                 Margin="5"
                 Background="White" 
                 FontSize="15" />
 
-        <!--#endregion-->
+            <!--#endregion-->
 
-    </StackPanel>
+        </StackPanel>
+    </ScrollViewer>
+    
 </Window>

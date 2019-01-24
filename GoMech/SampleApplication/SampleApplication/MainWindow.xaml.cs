@@ -8,11 +8,13 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Documents;
+using System.Windows.Forms;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using Microsoft.Win32;
 using ProNest;
 
 namespace SampleApplication
@@ -45,10 +47,10 @@ namespace SampleApplication
         public void StartupMethods()
         {
             // Getting directory information of Example folder
-            DirectoryInfo outputDirectoryInfo = new DirectoryInfo(@"C:\ProgramData\Hypertherm CAM\ProNest 2019\Examples\");
+            DirectoryInfo sampleCADPartFilesLocation = new DirectoryInfo(@"C:\ProgramData\Hypertherm CAM\ProNest 2019\Examples\");
 
             // Assigning the dxf file to cad part list 
-            CADPartList.ItemsSource = outputDirectoryInfo.GetFiles("*.dxf"); 
+            CADPartListComboBox.ItemsSource = sampleCADPartFilesLocation.GetFiles("*.dxf"); 
         }
 
         /// <summary>
@@ -82,23 +84,29 @@ namespace SampleApplication
             IpnNestingProperties NestingProperties = pronestObject.Job.PartList.GetNestingProperties();
 
             // Setting number of nest required
-            NestingProperties.QuantityRequired = int.Parse(NestQuantityTextBox.Text);
+            NestingProperties.QuantityRequired = int.Parse(NestQuantityNumberBox.Text);
 
             // Setting material of importing cad file
             // NestingProperties.Material = pronestObject.Job.Machine.Materials.GetMaterialByID(18);
-            int selectedMaterial = int.Parse((string)MaterialList.SelectedValue);
-            NestingProperties.Material = pronestObject.Job.Machine.Materials.GetMaterialByID(selectedMaterial);
 
+            // Getting text from material combobox
+            string selectedMaterialText = ((ComboBoxItem)MaterialListComboBox.SelectedItem).Content.ToString();
+
+            // Converting material text into number because we are using material ID
+            // and it should be an integer.
+            int selectedMaterial = int.Parse(selectedMaterialText);
+
+            // Setting material of importing cad file
+            NestingProperties.Material = pronestObject.Job.Machine.Materials.GetMaterialByID(selectedMaterial);
 
             // Re-applying the leads
             NestingProperties.RetainAllExistingLeads = false;
 
             // Setting class of part to "40Amp N2/N2" before importing cad file
-            NestingProperties.PartClass = MaterialList.Text;
+            NestingProperties.PartClass = MaterialListComboBox.Text;
 
-            // Path to our sample dxf files
-            // string CADfilePath = @"C:\ProgramData\Hypertherm CAM\ProNest 2019\Examples\Base Plate.dxf";
-            string CADfilePath = CADPartList.SelectedValue.ToString();
+            // Full Path to our sample dxf files
+            string CADfilePath = ((FileInfo)CADPartListComboBox.SelectedItem).FullName;
 
             // Adding CAD file to partlist
             pronestObject.Job.PartList.AddCADFile(CADfilePath, NestingProperties, CADImportProperties);
@@ -108,14 +116,15 @@ namespace SampleApplication
 
             // Assigning cutome plate width and length
             // NOTE: ProNest use Length first then width
-            AutoNestSetupValues.CustomPlateWidth = 5;
-            AutoNestSetupValues.CustomPlateLength = 3;
+            // AutoNestSetupValues.CustomPlateWidth = 5;
+            // AutoNestSetupValues.CustomPlateLength = 3;
 
             // Starting autonest
             pronestObject.Job.AutoNest.Start(AutoNestSetupValues, false, false);
 
             // Setting default output folder
-            string outputFolder = pronestObject.Job.Machine.Settings.ReadString("NC Parameters", "default output folder", @"C:\ProNest\");
+            // string outputFolder = pronestObject.Job.Machine.Settings.ReadString("NC Parameters", "default output folder", @"C:\ProNest\");
+            string outputFolder = pronestObject.Job.Machine.Settings.ReadString("NC Parameters", "default output folder", OutputDirectoryNameTextBox.Text);
 
             // Setting default output extension
             string outputExtension = pronestObject.Job.Machine.Settings.ReadString("NC Parameters", "default_cnc_extension", "CNC");
@@ -142,9 +151,11 @@ namespace SampleApplication
             foreach (IpnNest nest in pronestObject.Job.Nests)
             {
                 // Output every nest
-                nest.Output(outputFileFolderName + "\\" + pronestObject.Job.Name + "_" + OutputIndex.ToString() + "." + outputExtension, 0, false, true);
+                if (GenerateNCFileCheckBox.IsChecked == true)
+                    nest.Output(outputFileFolderName + "\\" + pronestObject.Job.Name + "_" + OutputIndex.ToString() + "." + outputExtension, 0, false, true);
 
-                nest.ExportDXF(outputFileFolderName + "\\" + pronestObject.Job.Name + "_" + OutputIndex.ToString() + "." + "DXF");
+                if (ExportToDxfCheckBox.IsChecked == true)
+                    nest.ExportDXF(outputFileFolderName + "\\" + pronestObject.Job.Name + "_" + OutputIndex.ToString() + "." + "DXF");
 
                 // Increasing the index by 1
                 OutputIndex++;
@@ -155,15 +166,34 @@ namespace SampleApplication
             pronestObject.Job.SaveAs(outputFileFolderName + "\\" + pronestObject.Job.Name + ".nif", null);
 
             // Output message to user
-            MessageBox.Show("Job Successfully Completed", "Sungrace Application", MessageBoxButton.OK);
+            System.Windows.MessageBox.Show("Job Successfully Completed", "Sungrace Application", MessageBoxButton.OK);
 
             // Visible our application after hitting Ok button
             SungraceApplication.Visibility = Visibility.Visible;
 
             // Quitting the ProNest after completing job
-            // pronestObject.Quit();
+            if (PronestAppVisibility.IsChecked == true)
+                pronestObject.Quit();
         }
 
+        /// <summary>
+        /// Browse output directory
+        /// </summary>
+        /// <param name="sender">Button itself is the sender</param>
+        /// <param name="e">Event arguments for this button</param>
+        private void BrowseOutputDirectory(object sender, RoutedEventArgs e)
+        {
+            // Getting folder browsing dialog box
+            FolderBrowserDialog folderBrowserDialog = new FolderBrowserDialog();
+
+            // Display folder browser
+            folderBrowserDialog.ShowDialog();
+
+            // Getting seleted path and assign it to the output directory name textbox
+            OutputDirectoryNameTextBox.Text = folderBrowserDialog.SelectedPath;
+        }
+
+        /*
         #region Up and Down Arrow Buttons
 
         /// <summary>
@@ -208,19 +238,10 @@ namespace SampleApplication
 
         #endregion
 
+        */
+
         #endregion
 
-        /*
-        private void Button_Click_1(object sender, RoutedEventArgs e)
-        {
-            string[] StagedFiles = Directory.GetFiles(@"C:\ProNest");
 
-            foreach (string file in StagedFiles)
-            {
-
-                textBox1.Text += file + Environment.NewLine;
-            }
-        }
-        */
     }
 }
