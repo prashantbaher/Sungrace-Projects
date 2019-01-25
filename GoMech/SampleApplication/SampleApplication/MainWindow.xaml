@@ -10,7 +10,7 @@
         MinHeight="300"
         MinWidth="500"
         Name="SungraceApplication"
-        Title="ProNest API" Height="700" Width="600">
+        Title="ProNest API" Height="730" Width="600">
     <ScrollViewer>
         
         <StackPanel Width="450" Background="WhiteSmoke" CanVerticallyScroll="True" HorizontalAlignment="Center" VerticalAlignment="Center">
@@ -44,11 +44,12 @@
                        />
 
                 <TextBox Grid.Column="1" Grid.Row="0" 
-                     Name="OutputJobNameTextBox" 
-                     Margin="5"
-                     TextAlignment="Center"
-                     FontSize="20"
-                     Width="Auto" />
+                         Name="OutputJobNameTextBox" 
+                         SelectedText="Job1"
+                         Margin="5"
+                         TextAlignment="Center"
+                         FontSize="20"
+                         Width="Auto" />
                 <!--#endregion-->
 
                 <!--#region Selecting Part List-->
@@ -61,13 +62,13 @@
 
                 <ComboBox Grid.Column="1" Grid.Row="1"
                           HorizontalContentAlignment="Right"
-                      Name="CADPartListComboBox"
-                      Padding="10"
-                      IsEditable="True"
-                      SelectedIndex="0"
-                      FontSize="15"
-                      Width="Auto"
-                      Margin="5">
+                          Name="CADPartListComboBox"
+                          Padding="10"
+                          IsEditable="False"
+                          SelectedIndex="0"
+                          FontSize="15"
+                          Width="Auto"
+                          Margin="5">
                 </ComboBox>
                 <!--#endregion-->
 
@@ -100,13 +101,13 @@
                        />
 
                 <ComboBox Grid.Column="1" Grid.Row="3"
-                      Padding="10"
+                          Padding="10"
                           HorizontalContentAlignment="Right"
-                      IsEditable="True"
-                      SelectedIndex="1"
-                      FontSize="15"
-                      Width="Auto"
-                      Margin="5">
+                          IsEditable="False"
+                          SelectedIndex="1"
+                          FontSize="15"
+                          Width="Auto"
+                          Margin="5">
                     <ComboBoxItem>None</ComboBoxItem>
                     <ComboBoxItem>40Amp N2/N2</ComboBoxItem>
                     <ComboBoxItem>40Amp Air/Air</ComboBoxItem>
@@ -126,13 +127,10 @@
                           Padding="10"
                           HorizontalContentAlignment="Right"
                           SelectedIndex="0"
-                          IsEditable="True"
+                          IsEditable="False"
                           FontSize="15"
                           Width="Auto"
                           Margin="5">
-                    <ComboBoxItem>18</ComboBoxItem>
-                    <ComboBoxItem>19</ComboBoxItem>
-                    <ComboBoxItem>20</ComboBoxItem>
                 </ComboBox>
                 <!--#endregion-->
 
@@ -176,17 +174,33 @@
                             <RowDefinition Height="*" />
                             <RowDefinition Height="*" />
                             <RowDefinition Height="*" />
+                            <RowDefinition Height="*" />
                         </Grid.RowDefinitions>
 
-                        <!--#region Generate NC File-->
+                        <!--#region Save Job file-->
                         <TextBlock Grid.Column="0" Grid.Row="0"
-                               Text="Generate NC File" 
+                               Text="Save Job" 
                                Padding="10"
                                FontSize="15"
                                Margin="5" />
 
                         <CheckBox Grid.Column="1" 
                                   Grid.Row="0"
+                                  Name="SaveJobCheckBox"
+                                  Margin="5"
+                                  HorizontalAlignment="Left"
+                                  VerticalAlignment="Center"/>
+                        <!--#endregion-->
+
+                        <!--#region Generate NC File-->
+                        <TextBlock Grid.Column="0" Grid.Row="1"
+                               Text="Generate NC File" 
+                               Padding="10"
+                               FontSize="15"
+                               Margin="5" />
+
+                        <CheckBox Grid.Column="1" 
+                                  Grid.Row="1"
                                   Name="GenerateNCFileCheckBox"
                                   Margin="5"
                                   HorizontalAlignment="Left"
@@ -194,14 +208,14 @@
                         <!--#endregion-->
 
                         <!--#region Export to Dxf-->
-                        <TextBlock Grid.Column="0" Grid.Row="1"
+                        <TextBlock Grid.Column="0" Grid.Row="2"
                                    Text="Export to Dxf" 
                                    Padding="10"
                                    FontSize="15"
                                    Margin="5" />
 
                         <CheckBox Grid.Column="1" 
-                                  Grid.Row="1"
+                                  Grid.Row="2"
                                   Name="ExportToDxfCheckBox"
                                   Margin="5"
                                   HorizontalAlignment="Left"
@@ -209,14 +223,14 @@
                         <!--#endregion-->
 
                         <!--#region Job Summary-->
-                        <TextBlock Grid.Column="0" Grid.Row="2"
+                        <TextBlock Grid.Column="0" Grid.Row="3"
                                Text="Job Summary" 
                                Padding="10"
                                FontSize="15"
                                Margin="5" />
 
                         <CheckBox Grid.Column="1" 
-                                  Grid.Row="2"
+                                  Grid.Row="3"
                                   Name="GenerateJobSummaryCheckBox"
                                   Margin="5"
                                   HorizontalAlignment="Left"
@@ -224,13 +238,13 @@
                         <!--#endregion-->
                         
                         <!--#region Output directory-->
-                        <TextBlock Grid.Column="0" Grid.Row="3"
+                        <TextBlock Grid.Column="0" Grid.Row="4"
                                Text="Output directory" 
                                Padding="10"
                                FontSize="15"
                                Margin="5" />
 
-                        <Grid Grid.Column="1" Grid.Row="3">
+                        <Grid Grid.Column="1" Grid.Row="4">
 
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="3*" />
@@ -239,7 +253,7 @@
 
                             <TextBox Grid.Column="0"
                                      Margin="5 5 0 5"
-                                     IsEnabled="False"
+                                     IsEnabled="False"                                     
                                      Text="C:\ProNest\"
                                      VerticalContentAlignment="Center"
                                      Name="OutputDirectoryNameTextBox"/>

@@ -1,21 +1,12 @@
-﻿using System;
+﻿using ProNest;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Reflection;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Forms;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
-using Microsoft.Win32;
-using ProNest;
 
 namespace SampleApplication
 {
@@ -24,6 +15,19 @@ namespace SampleApplication
     /// </summary>
     public partial class MainWindow : Window
     {
+        #region Public Properties
+
+        // Object for our ProNest application
+        public IpnApplication pronestObject;
+
+        // A List For ProNest Materials
+        public List<IpnMaterial> materials;
+
+        // List of Material Classess names
+        public List<IpnClassNames> ipnClassNames;
+
+        #endregion
+
         #region Constructor
 
         /// <summary>
@@ -33,8 +37,42 @@ namespace SampleApplication
         {
             InitializeComponent();
 
+            // Initialize Pronest to access material from Data base
+            InitializeProNest();
+            
             // Loads this function when application start
             StartupMethods();
+
+            
+        }
+
+        /// <summary>
+        /// Initialize Pronest to access material from Data base
+        /// </summary>
+        private void InitializeProNest()
+        {
+            // Object for Pronest Program Id
+            string pronestProgId = "ProNest.Application.12";
+
+            // Setting type of ProNest by using pronest program id
+            var pronestType = Type.GetTypeFromProgID(pronestProgId);
+
+            // Creating instance of ProNest application
+            pronestObject = (IpnApplication)Activator.CreateInstance(pronestType);
+
+            // Initializing list of materials
+            materials = new List<IpnMaterial>();
+
+            // Looping through each material inside ProNest materials
+            foreach (IpnMaterial material in  pronestObject.Database.Materials)
+            {
+                // Adding each material to list
+                materials.Add(material);
+            }
+
+            // Assigning itemsource of material list combobox text
+            MaterialListComboBox.ItemsSource = materials.Select(material => material.Name +" "+ Math.Round(material.Thickness, 3));
+
         }
 
         #endregion
@@ -60,20 +98,13 @@ namespace SampleApplication
         /// <param name="e">Event arguments for this button</param>
         public void Button_Click(object sender, RoutedEventArgs e)
         {
-            SungraceApplication.Visibility = Visibility.Hidden;
+            // Giving warning message to user if job is empty
+            if (OutputJobNameTextBox.Text == string.Empty)
+                System.Windows.MessageBox.Show("Empty Job name, using default name for saving file.", "Warning", MessageBoxButton.OK, MessageBoxImage.Warning);
 
-            // Object for our ProNest application
-            IpnApplication pronestObject;
-
-            // Object for Pronest Program Id
-            string pronestProgId = "ProNest.Application.12";
-
-            // Setting type of ProNest by using pronest program id
-            var pronestType = Type.GetTypeFromProgID(pronestProgId);
-
-            // Creating instance of ProNest application
-            pronestObject = (IpnApplication)Activator.CreateInstance(pronestType);
-
+            // Making applications visibilty to hidden
+            SungraceApplication.Visibility = Visibility.Collapsed;
+            
             // Making ProNest visible for user
             pronestObject.Visible = PronestAppVisibility.IsChecked.Value ? true : false;
 
@@ -87,17 +118,7 @@ namespace SampleApplication
             NestingProperties.QuantityRequired = int.Parse(NestQuantityNumberBox.Text);
 
             // Setting material of importing cad file
-            // NestingProperties.Material = pronestObject.Job.Machine.Materials.GetMaterialByID(18);
-
-            // Getting text from material combobox
-            string selectedMaterialText = ((ComboBoxItem)MaterialListComboBox.SelectedItem).Content.ToString();
-
-            // Converting material text into number because we are using material ID
-            // and it should be an integer.
-            int selectedMaterial = int.Parse(selectedMaterialText);
-
-            // Setting material of importing cad file
-            NestingProperties.Material = pronestObject.Job.Machine.Materials.GetMaterialByID(selectedMaterial);
+            NestingProperties.Material = materials[MaterialListComboBox.SelectedIndex];
 
             // Re-applying the leads
             NestingProperties.RetainAllExistingLeads = false;
@@ -133,7 +154,7 @@ namespace SampleApplication
             pronestObject.Job.Name = OutputJobNameTextBox.Text;
 
             // Setting Folder name of output job
-            string outputFileFolderName = outputFolder + pronestObject.Job.Name;
+            string outputFileFolderName = outputFolder + "\\" + pronestObject.Job.Name;
 
             // Getting output foldername information
             DirectoryInfo directoryInfo = new DirectoryInfo(outputFileFolderName);
@@ -150,20 +171,75 @@ namespace SampleApplication
             // Looping through each nest in the list of all nest done in our job
             foreach (IpnNest nest in pronestObject.Job.Nests)
             {
-                // Output every nest
+                // If NC file check box is checked then only Output every nest
                 if (GenerateNCFileCheckBox.IsChecked == true)
                     nest.Output(outputFileFolderName + "\\" + pronestObject.Job.Name + "_" + OutputIndex.ToString() + "." + outputExtension, 0, false, true);
 
+                // If NC file check box is checked then only export to dxf
                 if (ExportToDxfCheckBox.IsChecked == true)
                     nest.ExportDXF(outputFileFolderName + "\\" + pronestObject.Job.Name + "_" + OutputIndex.ToString() + "." + "DXF");
 
+                // If Create Job Summary check box is checked then only create job summary
+                if (GenerateJobSummaryCheckBox.IsChecked == true)
+                {
+                    // Reading template report file
+                    string jobSummary = File.ReadAllText(@"Job-Summary\report.html");
+
+                    // Adding Nest value
+                    jobSummary = jobSummary.Replace("NestValue", nest.Plate.QuantityNested.ToString());
+
+                    // Adding Time cut value
+                    jobSummary = jobSummary.Replace("TimesCutValue", nest.TimesCut.ToString());
+
+                    // Adding Plate utilization value
+                    jobSummary = jobSummary.Replace("PlateUsedValue", Math.Round(nest.Costing.PlateUsedUtilization, 3).ToString() + " %");
+
+                    // Adding Plate Material Name
+                    jobSummary = jobSummary.Replace("PlatesMaterialValue", nest.Plate.Material.Name);
+
+                    // Adding Nest Dimension
+                    jobSummary = jobSummary.Replace("NestDimensionValue", Math.Round(nest.LengthUsed, 3).ToString() + " X " + Math.Round(nest.WidthUsed, 3).ToString() + "in");
+
+                    TimeSpan timeSpan = TimeSpan.FromSeconds(Math.Round(nest.Costing.ProductionTime, 3));
+                    //DateTime dateTime = DateTime.Today.Add(timeSpan);
+                    string displayTime = timeSpan.ToString();
+
+                    // Adding Production time value
+                    jobSummary = jobSummary.Replace("ProductionTimeValue", displayTime);
+
+                    // Adding Production cost value
+                    jobSummary = jobSummary.Replace("ProductionCostValue", Math.Round(nest.Costing.ProductionCost, 3).ToString());
+
+                    // Getting job summary file
+                    FileInfo fileInfo = new FileInfo(outputFileFolderName + "\\" + "jobSummary.html");
+
+                    // If job summary file is not created then create at output location
+                    if (!fileInfo.Exists)
+                    {
+                        fileInfo.Create().Close();
+                    }
+
+                    // Getting StreaWriter for writing new job summary
+                    StreamWriter streamWriter = new StreamWriter(fileInfo.FullName);
+
+                    // StreamWrite the new job summary
+                    streamWriter.Write(jobSummary);
+
+                    // Closing StreamWriter
+                    streamWriter.Close();
+
+                    // Coping logo image for output path
+                    File.Copy(@"Job-Summary\logo.png", outputFileFolderName + "\\" + "logo.png", true);
+                }
+
                 // Increasing the index by 1
                 OutputIndex++;
-                
+
             }
 
-            // Saving this job
-            pronestObject.Job.SaveAs(outputFileFolderName + "\\" + pronestObject.Job.Name + ".nif", null);
+            // Saving this job if save job check box is checked
+            if (SaveJobCheckBox.IsChecked == true)
+                pronestObject.Job.SaveAs(outputFileFolderName + "\\" + pronestObject.Job.Name + ".nif", null);
 
             // Output message to user
             System.Windows.MessageBox.Show("Job Successfully Completed", "Sungrace Application", MessageBoxButton.OK);
@@ -172,7 +248,7 @@ namespace SampleApplication
             SungraceApplication.Visibility = Visibility.Visible;
 
             // Quitting the ProNest after completing job
-            if (PronestAppVisibility.IsChecked == true)
+            if (PronestAppVisibility.IsChecked != true)
                 pronestObject.Quit();
         }
 
@@ -192,53 +268,6 @@ namespace SampleApplication
             // Getting seleted path and assign it to the output directory name textbox
             OutputDirectoryNameTextBox.Text = folderBrowserDialog.SelectedPath;
         }
-
-        /*
-        #region Up and Down Arrow Buttons
-
-        /// <summary>
-        /// Increment the quantity of required nest
-        /// </summary>
-        /// <param name="sender">Button itself is the sender</param>
-        /// <param name="e">Event arguments for this button</param>
-        private void UpArrowButton(object sender, RoutedEventArgs e)
-        {
-            // Getting nest quantity text and storing into integer
-            int nestQuantity = int.Parse(NestQuantityTextBox.Text);
-
-            // Increasing the nest quantity by 1
-            ++nestQuantity;
-
-            // Setting the incremental quantity inplace of original text
-            NestQuantityTextBox.Text = nestQuantity.ToString();
-        }
-
-        /// <summary>
-        /// Decrement the quantity of required nest
-        /// </summary>
-        /// <param name="sender">Button itself is the sender</param>
-        /// <param name="e">Event arguments for this button</param>
-        private void DownArrowButton(object sender, RoutedEventArgs e)
-        {
-            // Getting nest quantity text and storing into integer
-            int nestQuantity = int.Parse(NestQuantityTextBox.Text);
-
-            // Decresing the nest quantity by 1
-            --nestQuantity;
-
-            // If nest quantity is less than 0 do not decrement
-            if (!(nestQuantity <= 0))
-            {
-                // Setting the Decremental quantity inplace of original text
-                NestQuantityTextBox.Text = nestQuantity.ToString();
-            }
-
-        }
-
-
-        #endregion
-
-        */
 
         #endregion
 

@@ -32,3 +32,5 @@ C:\Users\prashant\Documents\GitHub\Sungrace-Projects\GoMech\SampleApplication\Sa
 C:\Users\prashant\Documents\GitHub\Sungrace-Projects\GoMech\SampleApplication\SampleApplication\bin\Debug\sv\Xceed.Wpf.AvalonDock.resources.dll
 C:\Users\prashant\Documents\GitHub\Sungrace-Projects\GoMech\SampleApplication\SampleApplication\bin\Debug\zh-Hans\Xceed.Wpf.AvalonDock.resources.dll
 C:\Users\prashant\Documents\GitHub\Sungrace-Projects\GoMech\SampleApplication\SampleApplication\obj\Debug\SampleApplication.csproj.CopyComplete
+C:\Users\prashant\Documents\GitHub\Sungrace-Projects\GoMech\SampleApplication\SampleApplication\obj\Debug\SampleApplication_Content.g.cs
+C:\Users\prashant\Documents\GitHub\Sungrace-Projects\GoMech\SampleApplication\SampleApplication\bin\Debug\Job-Summary\report.html
