@@ -1,0 +1,8 @@
+C:\Users\prashant\Documents\GitHub\Sungrace-Projects\GoMech\SampleApplication\GoMechProject\obj\Debug\Interop.ProNest.dll
+C:\Users\prashant\Documents\GitHub\Sungrace-Projects\GoMech\SampleApplication\GoMechProject\obj\Debug\GoMechProject.csproj.ResolveComReference.cache
+C:\Users\prashant\Documents\GitHub\Sungrace-Projects\GoMech\SampleApplication\GoMechProject\obj\Debug\GoMechProject.csproj.CoreCompileInputs.cache
+C:\Users\prashant\Documents\GitHub\Sungrace-Projects\GoMech\SampleApplication\GoMechProject\bin\Debug\GoMechProject.dll
+C:\Users\prashant\Documents\GitHub\Sungrace-Projects\GoMech\SampleApplication\GoMechProject\bin\Debug\GoMechProject.pdb
+C:\Users\prashant\Documents\GitHub\Sungrace-Projects\GoMech\SampleApplication\GoMechProject\obj\Debug\GoMechProject.csprojAssemblyReference.cache
+C:\Users\prashant\Documents\GitHub\Sungrace-Projects\GoMech\SampleApplication\GoMechProject\obj\Debug\GoMechProject.dll
+C:\Users\prashant\Documents\GitHub\Sungrace-Projects\GoMech\SampleApplication\GoMechProject\obj\Debug\GoMechProject.pdb

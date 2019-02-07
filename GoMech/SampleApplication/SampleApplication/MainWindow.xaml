@@ -63,6 +63,7 @@
                 <ComboBox Grid.Column="1" Grid.Row="1"
                           HorizontalContentAlignment="Right"
                           Name="CADPartListComboBox"
+                          ItemsSource="{Binding CadPartList}"
                           Padding="10"
                           IsEditable="False"
                           SelectedIndex="0"
@@ -124,6 +125,7 @@
 
                 <ComboBox Grid.Column="1" Grid.Row="4"
                           Name="MaterialListComboBox"
+                          ItemsSource="{Binding Material}"
                           Padding="10"
                           HorizontalContentAlignment="Right"
                           SelectedIndex="0"
@@ -143,11 +145,12 @@
                        />
 
                 <CheckBox Grid.Column="1" 
-                      Grid.Row="5"
-                      Margin="5"
-                      Name="PronestAppVisibility"
-                      HorizontalAlignment="Left"
-                      VerticalAlignment="Center"/>
+                          Grid.Row="5"
+                          Margin="5"
+                          Command="{Binding ProNestVisibility}"
+                          Name="PronestAppVisibility"
+                          HorizontalAlignment="Left"
+                          VerticalAlignment="Center"/>
                 <!--#endregion-->
 
             </Grid>
@@ -263,7 +266,7 @@
                                     Background="White"
                                     Margin="0 5 5 5"
                                     Padding="5"
-                                    Click="BrowseOutputDirectory"
+                                    
                                     />
 
                         </Grid>
@@ -279,7 +282,7 @@
 
             <!--#region Application Main Button-->
             <Button Content="Run ProNest" 
-                Click="Button_Click"
+                
                 Padding="15" 
                 Margin="5"
                 Background="White" 

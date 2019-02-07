@@ -15,6 +15,7 @@ namespace SampleApplication
     /// </summary>
     public partial class MainWindow : Window
     {
+        /*
         #region Public Properties
 
         // Object for our ProNest application
@@ -27,6 +28,7 @@ namespace SampleApplication
         public List<IpnClassNames> ipnClassNames;
 
         #endregion
+        */
 
         #region Constructor
 
@@ -38,14 +40,17 @@ namespace SampleApplication
             InitializeComponent();
 
             // Initialize Pronest to access material from Data base
-            InitializeProNest();
+            // InitializeProNest();
             
             // Loads this function when application start
-            StartupMethods();
+            // StartupMethods();
 
-            
+            this.DataContext = new ProNestPilotProject();
         }
 
+        #endregion
+
+        /*
         /// <summary>
         /// Initialize Pronest to access material from Data base
         /// </summary>
@@ -271,6 +276,6 @@ namespace SampleApplication
 
         #endregion
 
-
+        */
     }
 }
