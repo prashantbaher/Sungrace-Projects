@@ -10,7 +10,7 @@
         MinHeight="300"
         MinWidth="500"
         Name="SungraceApplication"
-        Title="ProNest API" Height="730" Width="600">
+        Title="ProNest API" Height="750" Width="600">
     <ScrollViewer>
         
         <StackPanel Width="450" Background="WhiteSmoke" CanVerticallyScroll="True" HorizontalAlignment="Center" VerticalAlignment="Center">
@@ -45,7 +45,7 @@
 
                 <TextBox Grid.Column="1" Grid.Row="0" 
                          Name="OutputJobNameTextBox" 
-                         SelectedText="Job1"
+                         Text="{Binding JobName}"
                          Margin="5"
                          TextAlignment="Center"
                          FontSize="20"
@@ -66,7 +66,7 @@
                           ItemsSource="{Binding CadPartList}"
                           Padding="10"
                           IsEditable="False"
-                          SelectedIndex="0"
+                          SelectedIndex="{Binding PartFileIndex}"
                           FontSize="15"
                           Width="Auto"
                           Margin="5">
@@ -83,7 +83,7 @@
                 <wpfx:IntegerUpDown Grid.Column="1" Grid.Row="2"
                                     Name="NestQuantityNumberBox"
                                     DisplayDefaultValueOnEmptyText="True"
-                                    DefaultValue="1"
+                                    Value="{Binding NestQuantity}"
                                     Increment="1"
                                     Minimum="1"
                                     Width="Auto"
@@ -103,21 +103,18 @@
 
                 <ComboBox Grid.Column="1" Grid.Row="3"
                           Padding="10"
+                          ItemsSource="{Binding PronestMaterialsClasses}"
                           HorizontalContentAlignment="Right"
                           IsEditable="False"
-                          SelectedIndex="1"
+                          SelectedIndex="{Binding ClassIndex}"
                           FontSize="15"
                           Width="Auto"
-                          Margin="5">
-                    <ComboBoxItem>None</ComboBoxItem>
-                    <ComboBoxItem>40Amp N2/N2</ComboBoxItem>
-                    <ComboBoxItem>40Amp Air/Air</ComboBoxItem>
-                </ComboBox>
+                          Margin="5" />
                 <!--#endregion-->
 
                 <!--#region Selecting Material-->
                 <TextBlock Grid.Column="0" Grid.Row="4"
-                       Text="Select Material ID" 
+                       Text="Select Material" 
                        Padding="10"
                        FontSize="15"
                        Margin="5"
@@ -125,10 +122,30 @@
 
                 <ComboBox Grid.Column="1" Grid.Row="4"
                           Name="MaterialListComboBox"
-                          ItemsSource="{Binding Material}"
+                          ItemsSource="{Binding Materials}"
                           Padding="10"
                           HorizontalContentAlignment="Right"
-                          SelectedIndex="0"
+                          SelectedIndex="{Binding MaterialIndex}"
+                          IsEditable="False"
+                          FontSize="15"
+                          Width="Auto"
+                          Margin="5">
+                </ComboBox>
+                <!--#endregion-->
+
+                <!--#region Selecting Machine-->
+                <TextBlock Grid.Column="0" Grid.Row="5"
+                       Text="Select Machine" 
+                       Padding="10"
+                       FontSize="15"
+                       Margin="5"
+                       />
+
+                <ComboBox Grid.Column="1" Grid.Row="5"
+                          ItemsSource="{Binding Machines}"
+                          Padding="10"
+                          HorizontalContentAlignment="Right"
+                          SelectedIndex="{Binding MachineIndex}"
                           IsEditable="False"
                           FontSize="15"
                           Width="Auto"
@@ -137,7 +154,7 @@
                 <!--#endregion-->
 
                 <!--#region Defining Pronest Visibility-->
-                <TextBlock Grid.Column="0" Grid.Row="5"
+                <TextBlock Grid.Column="0" Grid.Row="6"
                        Text="ProNest Visibility" 
                        Padding="10"
                        FontSize="15"
@@ -145,8 +162,9 @@
                        />
 
                 <CheckBox Grid.Column="1" 
-                          Grid.Row="5"
+                          Grid.Row="6"
                           Margin="5"
+                          IsChecked="{Binding ProNestVisibilityCheck}"
                           Command="{Binding ProNestVisibility}"
                           Name="PronestAppVisibility"
                           HorizontalAlignment="Left"
@@ -189,6 +207,7 @@
 
                         <CheckBox Grid.Column="1" 
                                   Grid.Row="0"
+                                  IsChecked="{Binding SaveJobCheck}"
                                   Name="SaveJobCheckBox"
                                   Margin="5"
                                   HorizontalAlignment="Left"
@@ -205,6 +224,7 @@
                         <CheckBox Grid.Column="1" 
                                   Grid.Row="1"
                                   Name="GenerateNCFileCheckBox"
+                                  IsChecked="{Binding NCFileCheck}"
                                   Margin="5"
                                   HorizontalAlignment="Left"
                                   VerticalAlignment="Center"/>
@@ -220,6 +240,7 @@
                         <CheckBox Grid.Column="1" 
                                   Grid.Row="2"
                                   Name="ExportToDxfCheckBox"
+                                  IsChecked="{Binding ExportToDxfCheck}"
                                   Margin="5"
                                   HorizontalAlignment="Left"
                                   VerticalAlignment="Center"/>
@@ -235,6 +256,7 @@
                         <CheckBox Grid.Column="1" 
                                   Grid.Row="3"
                                   Name="GenerateJobSummaryCheckBox"
+                                  IsChecked="{Binding JobSummaryCheck}"
                                   Margin="5"
                                   HorizontalAlignment="Left"
                                   VerticalAlignment="Center"/>
@@ -257,7 +279,7 @@
                             <TextBox Grid.Column="0"
                                      Margin="5 5 0 5"
                                      IsEnabled="False"                                     
-                                     Text="C:\ProNest\"
+                                     Text="{Binding DefaultOutputDirectoryPath}"
                                      VerticalContentAlignment="Center"
                                      Name="OutputDirectoryNameTextBox"/>
 
@@ -266,7 +288,7 @@
                                     Background="White"
                                     Margin="0 5 5 5"
                                     Padding="5"
-                                    
+                                    Command="{Binding BrowseDirectory}"
                                     />
 
                         </Grid>
@@ -282,11 +304,11 @@
 
             <!--#region Application Main Button-->
             <Button Content="Run ProNest" 
-                
-                Padding="15" 
-                Margin="5"
-                Background="White" 
-                FontSize="15" />
+                    Command="{Binding ProNestOutput}"
+                    Padding="15" 
+                    Margin="5"
+                    Background="White" 
+                    FontSize="15" />
 
             <!--#endregion-->
 

@@ -59,40 +59,5 @@ namespace SampleApplication.Properties {
                 resourceCulture = value;
             }
         }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
-        public static System.Drawing.Bitmap logo {
-            get {
-                object obj = ResourceManager.GetObject("logo", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to &lt;html&gt;
-        ///    &lt;head&gt;
-        ///        &lt;style&gt;
-        ///            #customers {
-        ///                font-family: &quot;Trebuchet MS&quot;, Arial, Helvetica, sans-serif;
-        ///                border-collapse: collapse;
-        ///                width: 100%;
-        ///            }
-        ///            
-        ///            #customers td, #customers th {
-        ///                border: 1px solid #ddd;
-        ///                padding: 8px;
-        ///            }
-        ///            
-        ///            #customers tr:nth-child(even){background-color: #f2f2f2;}
-        ///            
-        ///            #customers tr:hover {backgro [rest of string was truncated]&quot;;.
-        /// </summary>
-        public static string report {
-            get {
-                return ResourceManager.GetString("report", resourceCulture);
-            }
-        }
     }
 }
